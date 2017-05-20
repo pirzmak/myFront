@@ -75,7 +75,7 @@ export class EBayComponent implements OnInit {
   }
 
   submit() {
-    if(this.selectedCategory.value !== 0){}
+    if(this.selectedCategory.value !== 0){console.log()}
     else if(this.selectedCategory.value !== 0 && this.minCost && this.maxCost){}
     else {}
   }
