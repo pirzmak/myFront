@@ -1,6 +1,4 @@
 export class CategoryType {
-  name: string;
-  value: number;
   bestOfferEnabled: boolean;
   autoPayEnabled: boolean;
   b2bVatEnabed: boolean;
@@ -13,8 +11,4 @@ export class CategoryType {
   productSearchPageAvailable: boolean;
 
 
-  constructor(name: string, value: number) {
-    this.name = name;
-    this.value = value;
-  }
 }

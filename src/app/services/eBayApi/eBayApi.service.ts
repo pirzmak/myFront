@@ -3,6 +3,7 @@ import {Jsonp} from "@angular/http";
 
 import 'rxjs/add/operator/map';
 import {AuthorizationHttp} from "../authorizationHttp/authorizationHttp";
+import {CategoryType} from "../../components/eBay/eBay.model";
 
 @Injectable()
 export class EBayService {
@@ -10,42 +11,7 @@ export class EBayService {
   }
 
   getMainCategories() {
-    // return [
-    //   new Category('Antyki i Sztuka', 353),
-    //   new Category('Biuro i Szkoła', 1),
-    //   new Category('Biżuteria i Zegarki', 1),
-    //   new Category('Delikatesy', 1),
-    //   new Category('Dla Dzieci', 1),
-    //   new Category('Dom i Meble', 1),
-    //   new Category('Filmy i DVD', 1),
-    //   new Category('Firma i Przemysł', 1),
-    //   new Category('Fotografia i Kamery', 1),
-    //   new Category('Gry i Konsole', 1),
-    //   new Category('Instrumenty Muzyczne', 1),
-    //   new Category('Kolekcje', 1),
-    //   new Category('Komputery i Tablety', 1),
-    //   new Category('Książki', 1),
-    //   new Category('Majsterkowanie', 1),
-    //   new Category('Modelarstwo', 1),
-    //   new Category('Monety i Banknoty', 1),
-    //   new Category('Motoryzacja: Części', 1),
-    //   new Category('Motoryzacja: Pojazdy', 1),
-    //   new Category('Muzyka', 1),
-    //   new Category('Nieruchomości', 1),
-    //   new Category('Odzież, Buty i Dodatki', 1),
-    //   new Category('Ogród i Taras', 1),
-    //   new Category('Podróże', 1),
-    //   new Category('Sport i Turystyka', 1),
-    //   new Category('Sprzęt AGD', 1),
-    //   new Category('Telefony i Akcesoria', 1),
-    //   new Category('TV, Audio i Video', 1),
-    //   new Category('Zabawki', 1),
-    //   new Category('Zdrowie i Uroda', 1),
-    //   new Category('Znaczki', 1),
-    //   new Category('Zwierzęta', 1),
-    //   new Category('Wszystko inne', 1)];
-    //return this.authorizationHttp.get("/categories/maincategories").map(r => r.categories.map(cat => retur));]
-    return null;
+    return this.authorizationHttp.get("/categories/maincategories").map(res =>  res.json())
   }
 
   getSbsCategoriesByParentId(parentId: number) {

@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit{
   ngOnInit(): void {
   }
 
-  login(){
+  loginUser(){
     this.heroService.login(this.username,this.password);
   }
 
