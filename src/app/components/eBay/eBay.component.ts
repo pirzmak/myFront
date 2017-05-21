@@ -24,8 +24,10 @@ export class EBayComponent implements OnInit {
   minCost: number;
   maxCost: number;
   categoryList: CategoryType[];
+  selectedCategories: CategoryType[];
 
   constructor(private ebayService: EBayService) {
+    this.selectedCategories = [];
   }
 
   private searchTermStream = new Subject<string>();
@@ -48,32 +50,51 @@ export class EBayComponent implements OnInit {
 
     let selectedCategory = this.categoryList;
 
-      console.log("in");
-      const find = selectedCategory.find(categoryList => categoryList.childrenCategories.length > 0);
-      // selectedCategory = selectedCategory.find(categoryList => categoryList.childrenCategories.length > 0) .childrenCategories;
-      console.log(find);
+    console.log("in");
+    const find = selectedCategory.find(categoryList => categoryList.childrenCategories.length > 0);
+    // selectedCategory = selectedCategory.find(categoryList => categoryList.childrenCategories.length > 0) .childrenCategories;
+    console.log(find);
 
   }
 
   chooseCategory = (categoryName: string) => {
-    let selectedCategory = this.categoryList;
-
-    while(!selectedCategory.find(categoryList => categoryList.categoryName === categoryName)){
-      const tmpCategories = selectedCategory.find(categoryList => categoryList.childrenCategories.length > 0);
-      if(!tmpCategories)
-        break;
-      selectedCategory = selectedCategory.find(categoryList => categoryList.childrenCategories.length > 0).childrenCategories;
+    //TODO Refactor shity kod ale w przy takim czasie odopowiedzzi z serwera nie ma sensu przyspieszyc
+    let newSelected;
+    if (this.selectedCategories.length > 0) {
+      newSelected = this.selectedCategories.find(category =>
+      category.childrenCategories.find(categoryChild => categoryChild.categoryName === categoryName) !== null)
+        .childrenCategories.find(category => category.categoryName === categoryName);
+    } else {
+      newSelected = this.categoryList.find(category => category.categoryName === categoryName);
     }
-    const newSelectedCategory = selectedCategory.find(categoryList => categoryList.categoryName === categoryName);
 
-    const tmpCategories = selectedCategory.find(categoryList => categoryList.childrenCategories.length > 0);
-    if(tmpCategories)
-      tmpCategories.childrenCategories = [];
+    if (newSelected) {
 
-    this.ebayService.getSbsCategoriesByParentId(newSelectedCategory.categoryID)
-      .subscribe(data => newSelectedCategory.childrenCategories = data.map(elem => CategoryType.copy(elem)),
-        error2 => console.log("Zly request"),
-        () => (this));
+      const lastIndex = this.selectedCategories.length;
+
+      console.log(this.selectedCategories);
+
+      const tmp = this.selectedCategories.find(cat => {
+        console.log(cat.categoryID === newSelected.categoryParentID[0]);
+        return cat.categoryID === newSelected.categoryParentID[0];
+      });
+
+      console.log(this.selectedCategories.indexOf(tmp));
+
+      this.selectedCategories = this.selectedCategories.slice(
+        0, this.selectedCategories.indexOf(tmp)+1);
+
+      console.log(this.selectedCategories);
+      this.selectedCategories.push(newSelected);
+
+      console.log(categoryName, this.selectedCategories, lastIndex, newSelected);
+      this.ebayService.getSbsCategoriesByParentId(newSelected.categoryID)
+        .subscribe(data => this.selectedCategories[this.selectedCategories.length-1].childrenCategories = data.map(elem => CategoryType.copy(elem)),
+          error2 => console.log("Zly request"),
+          () => {
+            console.log(this.selectedCategories)
+          });
+    }
   }
 
 }

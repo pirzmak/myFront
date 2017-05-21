@@ -26,13 +26,13 @@
                 </select>
               </label>
             </div>
-            <!--<div *ngIf="selectedCategory !== undefined">-->
-              <!--<label>-->
-                <!--<select #c class="" (change)="chooseCategory(c.value)">-->
-                  <!--<option *ngFor="let category of categoryList" [ngValue]="category">{{category.categoryName}}</option>-->
-                <!--</select>-->
-              <!--</label>-->
-            <!--</div>-->
+            <div *ngFor="let selectedCategory of selectedCategories">
+            <label>
+              <select #d class="" (change)="chooseCategory(d.value)">
+                <option *ngFor="let category of selectedCategory.childrenCategories" [ngValue]="category">{{category.categoryName}}</option>
+              </select>
+            </label>
+          </div>
           </td>
           <td class="">
             <input type="submit" class="" value="Wyszukaj" (click)="submit()">
