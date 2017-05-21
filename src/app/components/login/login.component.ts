@@ -9,14 +9,19 @@ import {AuthorizationService} from "../../services/authorization/authorization.s
 })
 export class LoginComponent implements OnInit{
 
+  password: string;
+  username: string;
+
   constructor(private heroService: AuthorizationService) {
+    this.password = "";
+    this.username = "";
   }
 
   ngOnInit(): void {
   }
 
-  changeActive(){
-    this.heroService.login();
+  login(){
+    this.heroService.login(this.username,this.password);
   }
 
 
