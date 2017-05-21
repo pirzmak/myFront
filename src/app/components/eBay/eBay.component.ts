@@ -24,10 +24,8 @@ export class EBayComponent implements OnInit {
   minCost: number;
   maxCost: number;
   categoryList: CategoryType[];
-  selectedCategory: CategoryType;
 
   constructor(private ebayService: EBayService) {
-    this.categoryList = [new CategoryType("Choose product")]
   }
 
   private searchTermStream = new Subject<string>();
@@ -39,7 +37,7 @@ export class EBayComponent implements OnInit {
   ngOnInit() {
 
     this.ebayService.getMainCategories()
-      .subscribe(data => this.categoryList = data,
+      .subscribe(data => this.categoryList = data.map(elem => CategoryType.copy(elem)),
         error2 => console.log("Zly request"));
   }
 
@@ -47,11 +45,35 @@ export class EBayComponent implements OnInit {
     // if(this.selectedCategory.value !== 0){}
     // else if(this.selectedCategory.value !== 0 && this.minCost && this.maxCost){}
     // else {}
-    console.log(this.categoryList);
+
+    let selectedCategory = this.categoryList;
+
+      console.log("in");
+      const find = selectedCategory.find(categoryList => categoryList.childrenCategories.length > 0);
+      // selectedCategory = selectedCategory.find(categoryList => categoryList.childrenCategories.length > 0) .childrenCategories;
+      console.log(find);
+
   }
 
-  chooseCategory = (category: CategoryType) => {
-    this.selectedCategory = category;
+  chooseCategory = (categoryName: string) => {
+    let selectedCategory = this.categoryList;
+
+    while(!selectedCategory.find(categoryList => categoryList.categoryName === categoryName)){
+      const tmpCategories = selectedCategory.find(categoryList => categoryList.childrenCategories.length > 0);
+      if(!tmpCategories)
+        break;
+      selectedCategory = selectedCategory.find(categoryList => categoryList.childrenCategories.length > 0).childrenCategories;
+    }
+    const newSelectedCategory = selectedCategory.find(categoryList => categoryList.categoryName === categoryName);
+
+    const tmpCategories = selectedCategory.find(categoryList => categoryList.childrenCategories.length > 0);
+    if(tmpCategories)
+      tmpCategories.childrenCategories = [];
+
+    this.ebayService.getSbsCategoriesByParentId(newSelectedCategory.categoryID)
+      .subscribe(data => newSelectedCategory.childrenCategories = data.map(elem => CategoryType.copy(elem)),
+        error2 => console.log("Zly request"),
+        () => (this));
   }
 
 }

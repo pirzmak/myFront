@@ -11,18 +11,20 @@ export class AuthorizationHttp {
 
   createAuthorizationHeader(headers: Headers) {
     headers.append('Authorization', 'Bearer ' + this.authotrizationService.token);
+    console.log(headers)
   }
 
   get(url) {
-    const headers = new Headers();
+    let headers = new Headers();
     this.createAuthorizationHeader(headers);
+    console.log("a",headers.get('Authorization'));
     return this.http.get(this.applicationUrl + url, {
       headers: headers
     });
   }
 
   post(url, data) {
-    const headers = new Headers();
+    let headers = new Headers();
     this.createAuthorizationHeader(headers);
     return this.http.post(this.applicationUrl + url, data, {
       headers: headers

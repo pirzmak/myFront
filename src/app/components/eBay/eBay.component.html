@@ -17,25 +17,22 @@
                        [(ngModel)]=query>
               </div>
             </div>
-            <input type="text"
-                   class=""
-                   size="50"
-                   maxlength="300"
-                   placeholder="Cena Max"
-                   [(ngModel)]=maxCost>
-            <input type="text"
-                   class=""
-                   size="50"
-                   maxlength="300"
-                   placeholder="Cena Min"
-                   [(ngModel)]=minCost>
           </td>
           <td class="">
             <div>
-              <select class="" (change)="chooseCategory(value)">
-                <option *ngFor="let category of categoryList" [value]="category">{{category.categoryName}}</option>
-              </select>
+              <label>
+                <select #c class="" (change)="chooseCategory(c.value)">
+                  <option *ngFor="let category of categoryList" [ngValue]="category">{{category.categoryName}}</option>
+                </select>
+              </label>
             </div>
+            <!--<div *ngIf="selectedCategory !== undefined">-->
+              <!--<label>-->
+                <!--<select #c class="" (change)="chooseCategory(c.value)">-->
+                  <!--<option *ngFor="let category of categoryList" [ngValue]="category">{{category.categoryName}}</option>-->
+                <!--</select>-->
+              <!--</label>-->
+            <!--</div>-->
           </td>
           <td class="">
             <input type="submit" class="" value="Wyszukaj" (click)="submit()">

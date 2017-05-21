@@ -12,11 +12,12 @@ export class AuthorizationService {
   constructor(private http: Http) {
     this.authorize = {active : false};
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
+    console.log(currentUser);
     if(currentUser) {
       this.token = currentUser.token;
       this.authorize.active = true;
     }
+    console.log(this.token);
   }
 
   login(username: string, password: string) {
@@ -36,9 +37,11 @@ export class AuthorizationService {
     this.http.post(url, undefined , options)
       .map(res =>  res.json())
       .subscribe(access_token => this.token = access_token.access_token,
-                error2 => console.log("Zle haslo"));
+                error2 => console.log("Zle haslo"), () => {
+        localStorage.setItem('currentUser', JSON.stringify({ token: this.token}));
+        this.authorize.active = true;
+        });
 
-    localStorage.setItem('currentUser', JSON.stringify({ token: this.token}));
   }
 
 

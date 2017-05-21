@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit{
   }
 
   loginUser(){
+    console.log(this.username);
     this.heroService.login(this.username,this.password);
   }
 

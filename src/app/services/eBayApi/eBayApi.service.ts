@@ -14,8 +14,8 @@ export class EBayService {
     return this.authorizationHttp.get("/categories/maincategories").map(res =>  res.json())
   }
 
-  getSbsCategoriesByParentId(parentId: number) {
-    return this.authorizationHttp.get("/categories/subcategories/" + parentId);
+  getSbsCategoriesByParentId(parentId: string) {
+    return this.authorizationHttp.get("/categories/subcategories/" + parentId).map(res =>  res.json());
   }
 
   getSpecificsCategoriesById(categoryId: number) {
