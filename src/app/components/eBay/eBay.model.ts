@@ -10,5 +10,7 @@ export class CategoryType {
   categoyParentName: string[];
   productSearchPageAvailable: boolean;
 
-
+  constructor(name: string){
+    this.categoryName = name;
+  }
 }

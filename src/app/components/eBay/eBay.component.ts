@@ -27,7 +27,7 @@ export class EBayComponent implements OnInit {
   selectedCategory: CategoryType;
 
   constructor(private ebayService: EBayService) {
-
+    this.categoryList = [new CategoryType("Choose product")]
   }
 
   private searchTermStream = new Subject<string>();

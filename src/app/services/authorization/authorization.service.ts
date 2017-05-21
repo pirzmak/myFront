@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {Authorize} from "./authorization.model";
 import {Observable} from "rxjs/Observable";
 import {Headers,Http, RequestOptions, URLSearchParams} from "@angular/http";
-import {isNullOrUndefined} from "util";
 
 
 @Injectable()
@@ -11,11 +10,13 @@ export class AuthorizationService {
   token: string;
 
   constructor(private http: Http) {
-    this.authorize = {active : true};
+    this.authorize = {active : false};
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    if(!isNullOrUndefined(currentUser))
+    if(currentUser) {
       this.token = currentUser.token;
+      this.authorize.active = true;
+    }
   }
 
   login(username: string, password: string) {
@@ -36,6 +37,7 @@ export class AuthorizationService {
       .map(res =>  res.json())
       .subscribe(access_token => this.token = access_token.access_token,
                 error2 => console.log("Zle haslo"));
+
     localStorage.setItem('currentUser', JSON.stringify({ token: this.token}));
   }
 
