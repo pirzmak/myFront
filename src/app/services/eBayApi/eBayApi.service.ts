@@ -14,7 +14,7 @@ export class EBayService {
     return this.authorizationHttp.get("/categories/maincategories").map(res =>  res.json())
   }
 
-  getSbsCategoriesByParentId(parentId: string) {
+  getSbsCategoriesByParentId(parentId: number) {
     return this.authorizationHttp.get("/categories/subcategories/" + parentId).map(res =>  res.json());
   }
 
@@ -31,11 +31,11 @@ export class EBayService {
   }
 
   getItemsByKeyWord(keyword: string) {
-    return this.authorizationHttp.get("/items/search/" + keyword);
+    return this.authorizationHttp.get("/items/search/" + keyword).map(res =>  res.json());
   }
 
-  getItemsByKeyWordAndCategory(keyword: string, categoryId: number) {
-    return this.authorizationHttp.get("/items/search/" + keyword + "/" + categoryId);
+  getItemsByKeyWordAndCategory(keyword: string, categoryId: string) {
+    return this.authorizationHttp.get("/items/search/" + keyword + "/" + categoryId).map(res =>  res.json());
   }
 
   getItemsByKeyWordAndCategoryAndMinMaxPrice(keyword: string, categoryId: number, minPrice: number, maxPrice: number) {
