@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import {AuthorizationService} from '../authorization/authorization.service';
+import {AppConfig} from "../../config";
 
 @Injectable()
 export class AuthorizationHttp {
 
-  applicationUrl = 'https://192.168.1.72:8800';
+  applicationUrl = AppConfig.serwerUrl;
 
   constructor(private http: Http, private authotrizationService: AuthorizationService) {}
 
