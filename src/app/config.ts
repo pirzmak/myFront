@@ -1,4 +1,4 @@
-export class AppConfig {
-  static serwerUrl = "https://192.168.1.19:8800"
+export class AppConfigConsts {
+  static serwerUrl = "https://192.168.1.72:8800"
 }
 

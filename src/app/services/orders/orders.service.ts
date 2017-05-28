@@ -1,25 +1,21 @@
 import {Injectable} from "@angular/core";
-import {Jsonp} from "@angular/http";
-
-import 'rxjs/add/operator/map';
 import {AuthorizationHttp} from "../authorizationHttp/authorizationHttp";
-import {CategoryType} from "../../components/eBay/eBay.model";
 
 @Injectable()
-export class EBayService {
+export class OrdersService {
   constructor(private authorizationHttp: AuthorizationHttp) {
   }
 
-  getMainCategories() {
+  addOrder() {
     return this.authorizationHttp.get("/categories/maincategories").map(res =>  res.json())
   }
 
-  getSbsCategoriesByParentId(parentId: string) {
+  getSbsCategoriesByParentId(parentId: number) {
     return this.authorizationHttp.get("/categories/subcategories/" + parentId).map(res =>  res.json());
   }
 
-  getSpecificsCategoriesById(categoryId: string) {
-    return this.authorizationHttp.get("/categories/categoryspecifics/" + categoryId).map(res =>  res.json());
+  getSpecificsCategoriesById(categoryId: number) {
+    return this.authorizationHttp.get("/categories/categoryspecifics/" + categoryId);
   }
 
   getBestMatchCategory(keyword: string) {
@@ -50,3 +46,4 @@ export class EBayService {
     return this.authorizationHttp.get("/items/cheapest/item/" + keyword + "/" + categoryId);
   }
 }
+
