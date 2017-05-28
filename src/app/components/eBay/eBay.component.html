@@ -45,14 +45,14 @@
         </label>
       </div>
       <label class="themeProperties">Properties</label>
-      <div *ngFor="let item of properties">
+      <div class="propertiesContainer" *ngFor="let item of properties">
         <label class="labelProperties">{{item.type}}</label>
         <label>
           <select #e class="selectBlockProperties" *ngIf="item.value.length > 0" (change)="addProperties(item.type,e.value)">
             <option>choose category...</option>
             <option *ngFor="let value of item.value; let i = index" [ngValue]="value">{{value}}</option>
           </select>
-          <input *ngIf="item.value.length === 0" class="form-control" type="text" placeholder="{{item.type}}" [(ngModel)]=item[i] name="value" (change)="addProperties(item.type,item[i])">
+          <input *ngIf="item.value.length === 0" class="form-control propertiesControlForm" type="text" placeholder="{{item.type}}" [(ngModel)]=item[i] name="value" (change)="addProperties(item.type,item[i])">
         </label>
       </div>
     </div>

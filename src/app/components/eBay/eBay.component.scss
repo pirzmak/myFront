@@ -6,7 +6,7 @@
 
   .left {
     float: left;
-    width: 50%;
+    width: auto;
   }
 
   .themeProperties{
@@ -17,7 +17,42 @@
   .right {
 
     float: right;
-    width: 30%;
+    width: 35rem;
+
+    .propertiesContainer {
+
+      margin-right: 6rem;
+
+      .labelProperties {
+        display: inline-block;
+        float: left;
+        width: 10rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-right: 1rem;
+        overflow: hidden
+      }
+
+      .selectBlockProperties {
+        display: inline-block;
+        width: 20rem;
+        height: 2rem;
+        padding: 3px 6px;
+        font-size: 1rem;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      .propertiesControlForm {
+        width: 20rem;
+        height: 2rem;
+        padding: 3px 6px;
+        font-size: 1rem;
+      }
+    }
 
     .myListElem {
       position: absolute;
