@@ -3,12 +3,11 @@ import {AuthorizationHttp} from "../authorizationHttp/authorizationHttp";
 
 @Injectable()
 export class OrdersService {
+
+  ordersList
   constructor(private authorizationHttp: AuthorizationHttp) {
   }
 
-  addOrder(order:Order) {
-    this.authorizationHttp.post("/orders/" + this.authorizationHttp.usernameord,order);
-  }
 
   getSbsCategoriesByParentId(parentId: number) {
     return this.authorizationHttp.get("/categories/subcategories/" + parentId).map(res =>  res.json());

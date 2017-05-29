@@ -17,7 +17,7 @@ export class AuthorizationService {
 
     if (currentUser) {
       this.token = currentUser.token;
-      this.username = JSON.parse(localStorage.getItem('currentUserName'));
+      this.username = JSON.parse(localStorage.getItem('currentUserName')).username;
       this.authorize.active = true;
     }
   }
