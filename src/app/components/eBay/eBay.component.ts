@@ -113,6 +113,7 @@ export class EBayComponent implements OnInit {
   chooseCategory = (categoryName: string) => {
     //TODO Refactor shity kod ale w przy takim czasie odopowiedzzi z serwera nie ma sensu przyspieszyc
     let newSelected;
+    console.log("KLIK",categoryName);
     if (this.selectedCategories.length > 0) {
       newSelected = this.selectedCategories.find(category =>
       category.childrenCategories.find(categoryChild => categoryChild.categoryName === categoryName) !== null)
@@ -132,11 +133,13 @@ export class EBayComponent implements OnInit {
       this.selectedCategories.push(newSelected);
 
       this.ebayService.getSbsCategoriesByParentId(newSelected.categoryID)
-        .subscribe(data => this.selectedCategories[this.selectedCategories.length - 1].childrenCategories = data.map(elem => CategoryType.copy(elem)),
+        .subscribe(data => this.selectedCategories[this.selectedCategories.length - 1].childrenCategories =
+            data.map(elem => CategoryType.copy(elem)).filter(cat => cat.categoryID !== newSelected.categoryID),
           error2 => console.log("Zly request"),
           () => {
             console.log(this.selectedCategories)
           });
+
 
       this.ebayService.getSpecificsCategoriesById(newSelected.categoryID)
         .subscribe(data => {

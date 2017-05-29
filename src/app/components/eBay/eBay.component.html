@@ -35,7 +35,7 @@
         </label>
       </div>
       <div *ngFor="let selectedCategory of selectedCategories">
-        <label>
+        <label *ngIf="selectedCategory.childrenCategories.length > 0">
           <select #d class="selectBlock" (change)="chooseCategory(d.value)">
             <option>choose category...</option>
             <option *ngFor="let category of selectedCategory.childrenCategories" [ngValue]="category">
