@@ -9,6 +9,7 @@ import { AppConfigConsts} from "../../config";
 export class AuthorizationService {
   authorize: Authorize;
   token: string;
+  username: string;
 
   constructor(private http: Http, private router: Router) {
     this.authorize = {active: false};
@@ -16,6 +17,7 @@ export class AuthorizationService {
 
     if (currentUser) {
       this.token = currentUser.token;
+      this.username = JSON.parse(localStorage.getItem('currentUserName'));
       this.authorize.active = true;
     }
   }
@@ -38,9 +40,11 @@ export class AuthorizationService {
       .map(res => res.json())
       .subscribe(access_token => {
           this.token = access_token.access_token;
+          this.username = username;
           this.authorize.active = true;
           this.router.navigate(['./eBay']);
           localStorage.setItem('currentUser', JSON.stringify({token: this.token}));
+          localStorage.setItem('currentUserName', JSON.stringify({username: username}));
         },
         error2 => console.log("Zle haslo"));
 
