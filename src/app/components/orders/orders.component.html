@@ -1,16 +1,21 @@
 <div class="form-inline ebayContainer">
+
   <div class="left">
-    <table class="gh-tbl">
-      <thead>
-      <th></th>
-      <th>Founded Orders</th>
-      </thead>
-      <tr *ngFor="let item of itemList">
-        <td><img src="{{item.galleryURL}}" style="width:128px;height:128px;"></td>
-        <td>{{item.title}}</td>
-        <td><a href="{{item.viewItemURL}}">{{item.viewItemURL}}</a></td>
-      </tr>
-    </table>
+   <input type="text"
+           class="form-group form-control"
+           size="50"
+           maxlength="300"
+           placeholder="Search..."
+           [(ngModel)]=query>
+           <br>
+		  <div>
+		  <label>choose condition:</label>
+		 <select #c class="selectBlock" [(ngModel)]="selectedCondition">
+		  <option *ngFor="let con of conditions" [ngValue]="con">{{con}}</option>
+		</select>
+
+		  </div>
+
   </div>
 
   <div class="right">
@@ -56,6 +61,32 @@
       </div>
       </div>
     </div>
+      <button class="confirmButton" (click)="findOffers()" >Find offers</button>
   </div>
-  <button class="confirmButton">Take</button>
+  <div *ngIf="someData">
+<table class="gh-tbl" >
+      <thead>
+      <th>Date and time</th>
+      <th>Price range</th>
+      <th>Category</th>
+      <th>Condition</th>
+      <th>Delivery type</th>
+      <th>Keyword</th>
+      </thead>
+      <tr *ngFor="let preference of userPreferences">
+        <td>{{preference.dateAndTime}}</td>
+        <td>{{preference.priceMin}}-{{preference.priceMax}}</td>
+        <td>{{matchCategory(preference.categoryID)}}</td>
+        <td>{{preference.condition}}</td>
+        <td>{{preference.deliveryOptions}}</td>
+        <td>{{preference.keyword}}</td>
+      </tr>
+    </table>
+    <br>
+<!--     <button class="btn btn-primary btn-general" (click)="previousPage()" *ngIf="pageCounter > 1 && someData">Previous page</button>
+    <button class="btn btn-primary btn-general" (click)="nextPage()" *ngIf="!nothingElse">Next page</button>--> 
+    </div>
+  <div *ngIf="!someData">
+  <p>Nothing to show</p>
+  </div>
 </div>

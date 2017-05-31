@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {EBayService} from '../../services/eBayApi/eBayApi.service';
+import {AuthorizationService} from "../../services/authorization/authorization.service";
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
+import {UserPreference} from './orders.model';
 
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -26,11 +28,19 @@ export class OrdersComponent implements OnInit {
   itemList: Item[];
   properties: Properties[];
   selectedProperties: {};
+  conditions: string[];
+  selectedCondition: string;
+  userPreferences: UserPreference[];
+  //pageCounter: number;
+  someData: boolean;
 
-  constructor(private ebayService: EBayService) {
+  constructor(private ebayService: EBayService, private authotrizationService: AuthorizationService) {
     this.selectedCategories = [];
     this.properties = [];
     this.selectedProperties = {};
+    this.conditions = [];
+    this.userPreferences = [];
+    this.someData = false;
   }
 
   private searchTermStream = new Subject<string>();
@@ -40,10 +50,12 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.getUserOrders();
     this.ebayService.getMainCategories()
       .subscribe(data => this.categoryList = data.map(elem => CategoryType.copy(elem)),
         error2 => console.log("Zly request"));
+    this.conditions = ['New', 'New other (see details)', 'New with defects', 'Manufacturer refurbished', 'Seller refurbished', 'Used', 'Very Good', 'Good', 'Acceptable', 'For parts or not working'];
+
   }
 
   submit() {
@@ -83,6 +95,8 @@ export class OrdersComponent implements OnInit {
 
     this.selectedCategories = [];
     this.selectedCategories.push(newSelected);
+
+    console.log(newSelected);
 
     this.ebayService.getSbsCategoriesByParentId(newSelected.categoryID)
       .subscribe(data => this.selectedCategories[this.selectedCategories.length - 1].childrenCategories = data.map(elem => CategoryType.copy(elem)),
@@ -161,5 +175,52 @@ export class OrdersComponent implements OnInit {
     }
   }
 
+  findOffers(){
+      let preference: UserPreference;
+      preference = new UserPreference();
+      preference.categoryID = this.selectedCategories[this.selectedCategories.length - 1].categoryID;
+      preference.priceMin = this.minCost;
+      preference.priceMax = this.maxCost;
+      preference.condition = this.selectedCondition;
+      preference.categorySpecifics = this.selectedProperties;
+      preference.deliveryOptions = 'Free International shipping';
+      preference.keyword = this.query;
+      console.log(preference);
+      this.ebayService.putOrderPreferences(this.authotrizationService.username, preference)
+       .map(res => res.json())
+      .subscribe(response => {
+          console.log(response.body);
+          this.getUserOrders()
+        },
+        error2 => {
+          console.log("Wrong post order");
+          return false;
+        });
+  }
+    
+  getUserOrders(){
+
+      this.ebayService.getUserOrders(this.authotrizationService.username)
+     .map(res => res.json())
+     .subscribe(data => {
+              if(!data){
+                  console.log('nothing else');
+              }else{
+                this.someData = true;
+                this.userPreferences = [];
+                this.userPreferences = data
+              }
+            },
+            error2 => console.log('ERROR'));
+  }
+    
+  matchCategory(categoryID: string): string{
+      for(let category of this.categoryList){
+          if(categoryID === category.categoryID)
+            return category.categoryName;
+          else
+              return 'Category not found';
+      }
+  }
 }
 
