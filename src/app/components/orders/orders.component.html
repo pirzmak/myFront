@@ -63,12 +63,12 @@
       </div>
       <label class="themeProperties">Properties</label>
       <div class="propertiesContainer">
-        <!--<div>-->
-          <!--<input class="form-control propertiesControlForm" type="text" placeholder="MinCost" [(ngModel)]=minCost-->
-                 <!--name="minCost" (change)="addProperties('MinCost',minCost)">-->
-          <!--<input class="form-control propertiesControlForm" type="text" placeholder="MaxCost" [(ngModel)]=maxCost-->
-                 <!--name="maxCost" (change)="addProperties('MaxCost',maxCost)">-->
-        <!--</div>-->
+        <div>
+          <input class="form-control propertiesControlForm" type="text" placeholder="MinCost" [(ngModel)]=minCost
+                 name="minCost">
+          <input class="form-control propertiesControlForm" type="text" placeholder="MaxCost" [(ngModel)]=maxCost
+                 name="maxCost">
+        </div>
         <label class="labelProperties">condition:</label>
         <select #c class="selectBlockProperties" [(ngModel)]="selectedCondition">
           <option *ngFor="let con of conditions" [ngValue]="con">{{con}}</option>
