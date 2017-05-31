@@ -39,7 +39,7 @@ export class OrdersComponent implements OnInit {
     this.properties = [];
     this.selectedProperties = {};
     this.conditions = [];
-    this.userPreferences = [];
+    this.userPreferences = [new UserPreference()];
     this.someData = false;
   }
 
@@ -96,7 +96,7 @@ export class OrdersComponent implements OnInit {
     this.selectedCategories = [];
     this.selectedCategories.push(newSelected);
 
-    console.log(newSelected);
+    console.log(newSelected,this.selectedCategories);
 
     this.ebayService.getSbsCategoriesByParentId(newSelected.categoryID)
       .subscribe(data => this.selectedCategories[this.selectedCategories.length - 1].childrenCategories = data.map(elem => CategoryType.copy(elem)),
@@ -127,7 +127,6 @@ export class OrdersComponent implements OnInit {
   chooseCategory = (categoryName: string) => {
     //TODO Refactor shity kod ale w przy takim czasie odopowiedzzi z serwera nie ma sensu przyspieszyc
     let newSelected;
-    console.log("KLIK",categoryName);
     if (this.selectedCategories.length > 0) {
       newSelected = this.selectedCategories.find(category =>
       category.childrenCategories.find(categoryChild => categoryChild.categoryName === categoryName) !== null)
@@ -208,7 +207,7 @@ export class OrdersComponent implements OnInit {
               }else{
                 this.someData = true;
                 this.userPreferences = [];
-                this.userPreferences = data
+                this.userPreferences = data;
               }
             },
             error2 => console.log('ERROR'));
