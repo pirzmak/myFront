@@ -34,6 +34,22 @@ nav a.active {
   color: $main_active_color;
 }
 
+tbody {
+  background-color: $main_background_color;
+}
+
+
+th {
+  padding: 1rem;
+  background-color: #CFD8DC;
+  border: 1px solid black;
+}
+
+td {
+  padding: 0.5rem;
+  border: 1px solid black;
+}
+
 .btn-general {
   background-color: #CFD8DC;
   border-color: #607D8B;
@@ -48,9 +64,9 @@ nav a.active {
 
 .title {
   padding: 1rem 2rem;
-  width: 10rem;
+  width: 30rem;
   float: left;
-  color: #ff3b3f;
+  color: $main_text_color;
   font-size: 2rem;
 }
 
@@ -66,11 +82,94 @@ nav a.active {
   background-color: $main_background_color;
   position: fixed;
   top: 0;
+  z-index: 100;
 }
 
-.mainContainer {
-  margin-top: 3rem;
+.right {
+
+  position: fixed;
+  right: 0;
+  top: 5rem;
+  width: 40rem;
+  height: calc(100% - 5rem);
+  background-color: $main_background_color;
+  border-left: 1px solid $main_font_color;
+
+  .searchInput {
+    margin-top: 2rem;
+    width: 35rem;
+  }
+
+  .propertiesContainer {
+
+    display: table-row;
+
+    .labelProperties {
+      display: inline-block;
+      float: left;
+      width: 15rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-right: 1rem;
+      overflow: hidden
+    }
+
+    .selectBlockProperties {
+      display: inline-block;
+      width: 20rem;
+      height: 2rem;
+      padding: 3px 6px;
+      font-size: 1rem;
+      line-height: 1.42857143;
+      color: #555;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .propertiesControlForm {
+      width: 20rem;
+      height: 2rem;
+      padding: 3px 6px;
+      font-size: 1rem;
+    }
+  }
+
+  .myInput {
+    display: block;
+    width: 25rem;
+    height: 1rem;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .selectBlock{
+    display: block;
+    width: 25rem;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
 }
+
+
+.mainContainer {
+  background-color: $main_text_color;
+  height: 100%;
+  z-index: 10;
+}
+
+
 
 
 

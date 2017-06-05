@@ -14,20 +14,23 @@
         <th>Condition</th>
         <th>Delivery type</th>
         <th>Keyword</th>
+        <th>Action</th>
         </thead>
-        <tr *ngFor="let preference of userPreferences">
-          <td>{{preference.dateAndTime}}</td>
-          <td>{{preference.priceMin}}-{{preference.priceMax}}</td>
-          <td>{{matchCategory(preference.categoryID)}}</td>
-          <td>{{preference.condition}}</td>
-          <td>{{preference.deliveryOptions}}</td>
-          <td>{{preference.keyword}}</td>
+        <tr *ngFor="let order of userOrders">
+          <td>{{order.userPreference.dateAndTime}}</td>
+          <td>{{order.userPreference.priceMin}}-{{order.userPreference.priceMax}}</td>
+          <td>{{matchCategory(order.userPreference.categoryId)}}</td>
+          <td *ngFor = "let condition of order.userPreference.conditions">{{condition}}</td>
+          <td>{{order.userPreference.deliveryOptions}}</td>
+          <td>{{order.userPreference.keyword}}</td>
+          <td><button class="btn btn-danger btn-general" on-click="deleteOrder(order.orderId)">Delete</button></td>
         </tr>
       </table>
       <br>
       <!--     <button class="btn btn-primary btn-general" (click)="previousPage()" *ngIf="pageCounter > 1 && someData">Previous page</button>
           <button class="btn btn-primary btn-general" (click)="nextPage()" *ngIf="!nothingElse">Next page</button>-->
     </div>
+    <br>
     <div *ngIf="!someData">
       <p>Nothing to show</p>
     </div>

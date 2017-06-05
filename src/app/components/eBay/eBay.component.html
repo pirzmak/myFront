@@ -1,5 +1,6 @@
 <div class="form-inline ebayContainer">
   <div class="left">
+    <div class="ebayContainerInner">
     <div class="searchComponent">
     <label class="form-group">Write search query</label>
     <input type="text"
@@ -17,11 +18,13 @@
         <th></th>
         <th>Title</th>
         <th>Item URL</th>
+        <th>Price</th>
         </thead>
         <tr *ngFor="let item of itemList">
           <td><img src="{{item.galleryURL}}" style="width:128px;height:128px;"></td>
           <td>{{item.title}}</td>
           <td><a href="{{item.viewItemURL}}">{{item.viewItemURL}}</a></td>
+          <td>{{item.sellingStatus['currentPrice']['value']}} {{item.sellingStatus['currentPrice']['currencyId']}}</td>
         </tr>
       </table>
       <br>
@@ -32,6 +35,7 @@
     </div>
     <div *ngIf="!someData">
       <p>Nothing to show</p>
+    </div>
     </div>
   </div>
 

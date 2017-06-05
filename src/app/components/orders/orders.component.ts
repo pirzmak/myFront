@@ -3,7 +3,7 @@ import {EBayService} from '../../services/eBayApi/eBayApi.service';
 import {AuthorizationService} from "../../services/authorization/authorization.service";
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
-import {UserPreference} from './orders.model';
+import {UserPreference, Order} from './orders.model';
 
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -30,7 +30,7 @@ export class OrdersComponent implements OnInit {
   selectedProperties: {};
   conditions: string[];
   selectedCondition: string;
-  userPreferences: UserPreference[];
+  userOrders: Order[];
   //pageCounter: number;
   someData: boolean;
 
@@ -39,7 +39,7 @@ export class OrdersComponent implements OnInit {
     this.properties = [];
     this.selectedProperties = {};
     this.conditions = [];
-    this.userPreferences = [new UserPreference()];
+    this.userOrders = [];
     this.someData = false;
   }
 
@@ -58,34 +58,10 @@ export class OrdersComponent implements OnInit {
 
   }
 
-  submit() {
-    if (this.selectedCategories.length !== 0) {
-      if (this.query !== '') {
-        this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategories[this.selectedCategories.length - 1].categoryID)
-          .subscribe(data => {
-              this.itemList = data
-            },
-            error2 => console.log('ERROR'));
-      }
-      else {
-        console.log('WRONG QUERY PARAMETERS');
-      }
-    }
-    else {
-      if (this.query !== '') {
-        this.ebayService.getItemsByKeyWord(this.query)
-          .subscribe(data => this.itemList = data,
-            error2 => console.log('ERROR'));
-      }
-      else {
-        console.log('WRONG QUERY PARAMETERS');
-      }
-    }
 
-  }
 
   addProperties = (type,value) => {
-    this.selectedProperties[type] = value;
+    this.selectedProperties[type] = [value];
     console.log(this.selectedProperties);
   };
 
@@ -176,11 +152,11 @@ export class OrdersComponent implements OnInit {
 
   findOffers(){
       let preference: UserPreference;
-      preference = new UserPreference();
-      preference.categoryID = this.selectedCategories[this.selectedCategories.length - 1].categoryID;
+      preference = new UserPreference(null,null,null,null,null,null,null,null);
+      preference.categoryId = this.selectedCategories[this.selectedCategories.length - 1].categoryID;
       preference.priceMin = this.minCost;
       preference.priceMax = this.maxCost;
-      preference.condition = this.selectedCondition;
+      preference.conditions = [this.selectedCondition];
       preference.categorySpecifics = this.selectedProperties;
       preference.deliveryOptions = 'Free International shipping';
       preference.keyword = this.query;
@@ -189,7 +165,7 @@ export class OrdersComponent implements OnInit {
        .map(res => res.json())
       .subscribe(response => {
           console.log(response.body);
-          this.getUserOrders()
+          this.getUserOrders();
         },
         error2 => {
           console.log("Wrong post order");
@@ -206,21 +182,32 @@ export class OrdersComponent implements OnInit {
                   console.log('nothing else');
               }else{
                 this.someData = true;
-                this.userPreferences = [];
-                this.userPreferences = data;
+                this.userOrders = [];
+                this.userOrders = data;
+                console.log(this.userOrders)
               }
             },
             error2 => console.log('ERROR'));
   }
 
-  matchCategory(categoryID: string): string{
+  matchCategory(categoryToMatch: string): string{
     if(this.categoryList !== undefined)
       for(let category of this.categoryList){
-          if(categoryID === category.categoryID)
+          if(category.categoryID === categoryToMatch)
             return category.categoryName;
-          else
-              return 'Category not found';
       }
+      return 'Category not found';
   }
+
+    deleteOrder(orderId){
+    console.log('Deleting order!' + orderId);
+    this.ebayService.deleteUserOrder(orderId)
+     .map(res => res.json())
+     .subscribe(data => {
+                console.log(data.deletedOrderId);
+                this.getUserOrders();
+            },
+            error2 => console.log('ERROR while deleting'));
+    }
 }
 

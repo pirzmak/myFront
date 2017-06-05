@@ -1,3 +1,4 @@
+import {FoundResult} from "../orders/orders.model";
 export class CategoryType {
   autoPayEnabled: boolean;
   b2BVATEnabled: boolean;
@@ -34,19 +35,16 @@ export class CategoryType {
   }
 }
 
-export class Properties {
-  type: string;
-  value: string[];
+export class ItemByCategory {
+  name: string;
+  value: FoundResult[];
+
+
+  constructor(name: string, value: FoundResult[]) {
+    this.name = name;
+    this.value = value;
+  }
 }
 
-export class Item {
-  itemId: number;
-  title: string;
-  subtitle: string;
-  primaryCategory: string[];
-  galleryURL: string;
-  viewItemURL: string;
-  productId: string[];
-}
 
 
